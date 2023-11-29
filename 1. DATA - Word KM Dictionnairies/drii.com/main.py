@@ -38,8 +38,7 @@ def get_df_from_letter(letter, mode = 'fr'):
     divs = content.find_all("div", {"class": "v_desktop"})
 
     for div in divs:
-        w = div.find("div", {"id": "wrapper"})
-        if w:
+        if w := div.find("div", {"id": "wrapper"}):
             dict_row = {}
             first = w.find("div", {"id": "first"})
 
@@ -66,8 +65,7 @@ def get_df_from_letter(letter, mode = 'fr'):
                 dict_row["scrap_letter"] = letter.upper()
                 result.append(dict_row)
     print(letter, len(result))
-    result_df = pd.DataFrame(result)
-    return result_df
+    return pd.DataFrame(result)
 
 print(get_df_from_letter('a'))
 
@@ -85,9 +83,12 @@ def get_all_word_from_alphabet():
     dfs = []
 
     for letter in alphabet:
-        dfs.append(clean_string_df(get_df_from_letter(letter))) #fr => km
-        dfs.append(clean_string_df(get_df_from_letter(letter,mode='km')))  # km => fr
-
+        dfs.extend(
+            (
+                clean_string_df(get_df_from_letter(letter)),
+                clean_string_df(get_df_from_letter(letter, mode='km')),
+            )
+        )
     after_df_result = pd.concat(dfs,ignore_index=True).dropna()
     a = len(after_df_result)
     df_result = after_df_result.drop_duplicates(subset=['key_fr']) # drop duplication
