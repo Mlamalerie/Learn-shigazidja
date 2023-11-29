@@ -28,8 +28,7 @@ img_link_previewURL = []
 keys_fr = data_drii["key_fr"].tolist()
 for i,key_fr in enumerate(keys_fr):
     q_key_fr = key_fr.split("(")[0].split("/")[0]
-    img_dict = get_image_from_pixabay_api(q_key_fr)
-    if img_dict:
+    if img_dict := get_image_from_pixabay_api(q_key_fr):
         img_link_webformatURL.append(img_dict["webformatURL"])
         img_link_previewURL.append(img_dict["previewURL"])
     else:
